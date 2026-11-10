@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rumis - Impresiones, Fotos & Stickers</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            eco: {
+              50: '#f4f8f4',
+              100: '#e2f0e4',
+              200: '#c8e6c9',
+              500: '#4a7c59',
+              700: '#2d5a27',
+              800: '#23471f',
+              900: '#193316',
+            },
+            earth: '#6c584c'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-eco-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- Header / Encabezado -->
+  <header class="bg-white border-b border-eco-200 shadow-sm sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="text-center sm:text-left">
+        <div class="inline-flex items-center gap-1.5 bg-eco-100 text-eco-700 text-xs font-bold px-3 py-1 rounded-full border border-eco-200 mb-1">
+          <span>🌿</span> Impresión Sustentable
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-eco-700 tracking-tight">Rumis</h1>
+        <p class="text-xs sm:text-sm text-earth font-medium">Fotocopias, impresiones, fotos & stickers</p>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-semibold text-eco-700 bg-eco-50 px-3 py-2 rounded-xl border border-eco-200">
+        <span>📍</span> Rosario, Santa Fe
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main class="max-w-3xl mx-auto px-4 py-8 w-full flex-grow">
+    
+    <div class="bg-white rounded-2xl shadow-xl shadow-eco-700/5 border border-eco-200 p-6 sm:p-10 space-y-8">
+      
+      <!-- Presentación -->
+      <div class="text-center max-w-xl mx-auto">
+        <h2 class="text-xl sm:text-2xl font-bold text-eco-900">Cotizá y enviá tu pedido online</h2>
+        <p class="text-slate-600 text-sm mt-1">Cargá tus archivos, elegí el papel y enviamos directamente la orden lista por WhatsApp.</p>
+      </div>
+
+      <!-- Banner Informativo: Política de Pago Previo (Estratégico y Comercial) -->
+      <div class="bg-amber-50 border-l-4 border-amber-500 rounded-r-2xl p-4 sm:p-5 shadow-sm space-y-2">
+        <div class="flex items-center gap-2 text-amber-900 font-bold text-sm sm:text-base">
+          <span class="text-lg">📢</span>
+          <h4>Información importante sobre la producción de tus impresiones</h4>
+        </div>
+        <p class="text-xs sm:text-sm text-amber-800 leading-relaxed">
+          Para garantizar la rapidez y eficiencia de tu entrega, <strong>todos los trabajos de impresión y copia se envían a producción únicamente con pago previo confirmado</strong> (vía Mercado Pago o transferencia al alias <code class="bg-amber-100 text-amber-900 font-mono px-1.5 py-0.5 rounded font-bold">jackicosme94</code>). Al tratarse de impresiones personalizadas con consumo directo de papel e insumos, esta medida nos permite preparar tu pedido de inmediato para que solo tengas que pasar a retirarlo sin demoras por el local. ¡Agradecemos tu comprensión y apoyo al trabajo artesanal! 🌿
+        </p>
+      </div>
+
+      <!-- Paso 1: Carga de Archivos -->
+      <section class="space-y-3">
+        <div class="flex items-center gap-2 border-l-4 border-eco-500 pl-3">
+          <h3 class="text-lg font-bold text-eco-800">1. Subir Documentos o Imágenes</h3>
+        </div>
+
+        <div 
+          id="drop-zone"
+          class="border-2 border-dashed border-eco-500 hover:border-eco-700 bg-eco-50 hover:bg-eco-100/50 rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-200 group"
+          onclick="document.getElementById('file-input').click()"
+        >
+          <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm border border-eco-200 mb-3 group-hover:scale-110 transition-transform">
+            <span class="text-2xl">📄</span>
+          </div>
+          <p class="text-sm font-semibold text-eco-900">
+            Arrastrá y soltá tus archivos acá o <span class="text-eco-500 underline">buscalos en tu equipo</span>
+          </p>
+          <p class="text-xs text-slate-500 mt-1">Formatos aceptados: PDF, JPG, PNG, WORD</p>
+          <input type="file" id="file-input" multiple class="hidden" onchange="actualizarListaArchivos(this.files)">
+
+          <!-- Lista de Archivos Seleccionados -->
+          <div id="file-list" class="mt-4 hidden space-y-2 text-left max-w-md mx-auto"></div>
+        </div>
+      </section>
+
+      <!-- Paso 2: Opciones del Pedido -->
+      <section class="space-y-4">
+        <div class="flex items-center gap-2 border-l-4 border-eco-500 pl-3">
+          <h3 class="text-lg font-bold text-eco-800">2. Opciones del Pedido</h3>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <!-- Tipo de Servicio -->
+          <div class="space-y-1.5">
+            <label for="tipo-servicio" class="text-xs font-bold text-eco-900 uppercase tracking-wider">Tipo de Trabajo</label>
+            <select id="tipo-servicio" onchange="sincronizarServicioYPapel(); calcularTotal();" class="w-full bg-slate-50 border border-slate-300 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none transition-all">
+              <option value="fotocopia">Fotocopias / Impresiones Generales</option>
+              <option value="fotos">Impresión de Fotos ($900 c/u)</option>
+              <option value="stickers">Stickers Adhesivos ($1000 la plancha)</option>
+              <option value="tarjetas">Tarjetería / Eventos</option>
+            </select>
+          </div>
+
+          <!-- Tipo de Papel -->
+          <div class="space-y-1.5">
+            <label for="tipo-papel" class="text-xs font-bold text-eco-900 uppercase tracking-wider">Tipo de Papel</label>
+            <select id="tipo-papel" onchange="calcularTotal()" class="w-full bg-slate-50 border border-slate-300 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none transition-all">
+              <option value="ecologico" selected>Papel Ecológico 🌱 ($150 B&N / $250 Color)</option>
+              <option value="normal">Papel Normal A4 ($150 B&N / $225 Color)</option>
+              <option value="opalina">Papel Opalina ($500 c/u)</option>
+              <option value="adhesivo">Papel Adhesivo / Sticker ($1000 la plancha)</option>
+              <option value="fotografico">Papel Fotográfico ($900 c/u)</option>
+            </select>
+          </div>
+
+          <!-- Impresión Color / B&N -->
+          <div class="space-y-1.5">
+            <label for="tipo-color" class="text-xs font-bold text-eco-900 uppercase tracking-wider">Modo de Impresión</label>
+            <select id="tipo-color" onchange="calcularTotal()" class="w-full bg-slate-50 border border-slate-300 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none transition-all">
+              <option value="bn">Blanco y Negro</option>
+              <option value="color">Color</option>
+            </select>
+          </div>
+
+          <!-- Cantidad -->
+          <div class="space-y-1.5">
+            <label for="cantidad" class="text-xs font-bold text-eco-900 uppercase tracking-wider">Cantidad (Hojas / Planchas / Fotos)</label>
+            <input type="number" id="cantidad" value="1" min="1" oninput="calcularTotal()" class="w-full bg-slate-50 border border-slate-300 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none transition-all">
+          </div>
+
+          <!-- Acabado Extra -->
+          <div class="space-y-1.5 sm:col-span-2">
+            <label for="acabado" class="text-xs font-bold text-eco-900 uppercase tracking-wider">Acabado Extra</label>
+            <select id="acabado" onchange="calcularTotal()" class="w-full bg-slate-50 border border-slate-300 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none transition-all">
+              <option value="ninguno">Sin acabado extra</option>
+              <option value="plastificado">Plastificado / Laminado (+$300 por unidad)</option>
+              <option value="anillado" disabled class="text-slate-400">Anillado (Por el momento no se realizan)</option>
+            </select>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Paso 3: Datos de Contacto -->
+      <section class="space-y-4">
+        <div class="flex items-center gap-2 border-l-4 border-eco-500 pl-3">
+          <h3 class="text-lg font-bold text-eco-800">3. Datos de Contacto</h3>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label for="nombre-cliente" class="text-xs font-bold text-eco-900 uppercase tracking-wider">Nombre Completo *</label>
+            <input type="text" id="nombre-cliente" placeholder="Ej: María García" class="w-full bg-slate-50 border border-slate-300 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none transition-all">
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="telefono-cliente" class="text-xs font-bold text-eco-900 uppercase tracking-wider">Teléfono / WhatsApp *</label>
+            <input type="tel" id="telefono-cliente" placeholder="Ej: 3416123456" class="w-full bg-slate-50 border border-slate-300 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none transition-all">
+          </div>
+        </div>
+      </section>
+
+      <!-- Paso 4: Forma de Pago -->
+      <section class="space-y-4">
+        <div class="flex items-center gap-2 border-l-4 border-eco-500 pl-3">
+          <h3 class="text-lg font-bold text-eco-800">4. Forma de Pago</h3>
+        </div>
+
+        <div class="space-y-3">
+          <label class="flex items-start gap-3 p-4 border border-eco-200 rounded-xl cursor-pointer bg-slate-50 hover:bg-eco-50/60 transition-colors">
+            <input type="radio" name="pago" value="mp" checked onchange="toggleAliasMercadoPago()" class="mt-1 accent-eco-700">
+            <div class="space-y-1">
+              <span class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                💳 Tarjeta / Transferencia Mercado Pago
+              </span>
+              <p class="text-xs text-slate-500">Aboná con saldo en cuenta, débito o crédito de manera rápida.</p>
+              
+              <!-- Info Alias MP -->
+              <div id="info-alias-mp" class="mt-2 p-2.5 bg-sky-50 border border-sky-200 rounded-lg text-xs text-sky-900">
+                <span>Alias de Mercado Pago para transferir:</span>
+                <div class="flex items-center gap-2 mt-1">
+                  <strong class="text-sm text-sky-900 font-mono bg-sky-100 px-2 py-0.5 rounded border border-sky-300">jackicosme94</strong>
+                  <button type="button" onclick="copiarAlias()" class="text-xs bg-sky-600 hover:bg-sky-700 text-white font-semibold px-2 py-0.5 rounded transition-colors">
+                    Copiar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-4 border border-eco-200 rounded-xl cursor-pointer bg-slate-50 hover:bg-eco-50/60 transition-colors">
+            <input type="radio" name="pago" value="efectivo" onchange="toggleAliasMercadoPago()" class="mt-1 accent-eco-700">
+            <div class="space-y-1">
+              <span class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                💵 Efectivo al retirar en el local
+              </span>
+              <p class="text-xs text-slate-500">Aboná presencialmente al pasar a buscar tu encargo por Tarragona 465.</p>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Resumen de Cotización -->
+      <div class="bg-eco-100/70 border border-eco-200 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-bold text-eco-800 uppercase tracking-wider block">Total Estimado</span>
+          <span class="text-xs text-slate-600">Precios sujetos al desglose final seleccionado</span>
+        </div>
+        <div class="text-3xl font-extrabold text-eco-800" id="total-display">$150.00</div>
+      </div>
+
+      <!-- Botón de Envío por WhatsApp -->
+      <button 
+        type="button" 
+        onclick="enviarPedidoWhatsApp()" 
+        class="w-full bg-eco-700 hover:bg-eco-800 text-white font-bold py-4 px-6 rounded-xl text-base sm:text-lg shadow-lg shadow-eco-700/30 flex items-center justify-center gap-3 transition-all duration-200 active:scale-[0.99]"
+      >
+        <span>💬</span>
+        <span>Confirmar y Enviar Pedido por WhatsApp</span>
+      </button>
+
+    </div>
+  </main>
+
+  <!-- Footer / Pie de Página con Verificación de Comercio Real -->
+  <footer class="bg-white border-t border-eco-200 mt-12 py-8 px-4">
+    <div class="max-w-4xl mx-auto space-y-6">
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-600 border-b border-eco-100 pb-6">
+        <!-- Dirección -->
+        <div class="space-y-1">
+          <h4 class="font-bold text-eco-800 text-sm flex items-center gap-1.5">
+            <span>📍</span> Ubicación del Local
+          </h4>
+          <p class="font-medium">Tarragona 465</p>
+          <p>Fisherton / Rosario, Santa Fe</p>
+          <p class="text-slate-400">Argentina</p>
+        </div>
+
+        <!-- Contacto -->
+        <div class="space-y-1">
+          <h4 class="font-bold text-eco-800 text-sm flex items-center gap-1.5">
+            <span>📞</span> Vía Directa & WhatsApp
+          </h4>
+          <p class="font-medium text-slate-800">+54 9 341 619-0861</p>
+          <p>Atención y recepción de archivos</p>
+          <p class="text-eco-700 font-semibold mt-1">Alias MP: jackicosme94</p>
+        </div>
+
+        <!-- Email & Verificación -->
+        <div class="space-y-1">
+          <h4 class="font-bold text-eco-800 text-sm flex items-center gap-1.5">
+            <span>✉️</span> Correo Oficial
+          </h4>
+          <p class="font-medium text-slate-800">Jackelinmendoza20@gmail.com</p>
+          <p class="text-emerald-700 font-semibold mt-1 flex items-center gap-1">
+            <span>✅</span> Comercio Verificado
+          </p>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400 text-center sm:text-left">
+        <p>© Rumis fotocopias e impresiones - Rosario, Santa Fe. Todos los derechos reservados.</p>
+        <p class="flex items-center gap-1">🌿 Comprometidos con impresiones en papel ecológico</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Scripts de Lógica y Cotización -->
+  <script>
+    let archivosCargados = [];
+
+    // Drag & Drop handlers
+    const dropZone = document.getElementById('drop-zone');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.classList.add('bg-eco-100', 'border-eco-700');
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.classList.remove('bg-eco-100', 'border-eco-700');
+    });
+
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      actualizarListaArchivos(files);
+    }
+
+    function actualizarListaArchivos(files) {
+      archivosCargados = Array.from(files);
+      const fileListDiv = document.getElementById('file-list');
+      
+      if (archivosCargados.length > 0) {
+        fileListDiv.classList.remove('hidden');
+        fileListDiv.innerHTML = archivosCargados.map((f, i) => `
+          <div class="flex items-center justify-between bg-white border border-eco-200 p-2.5 rounded-lg text-xs">
+            <span class="truncate font-semibold text-slate-700">📎 ${f.name}</span>
+            <span class="text-slate-400 text-[10px] ml-2">${(f.size / 1024).toFixed(1)} KB</span>
+          </div>
+        `).join('');
+      } else {
+        fileListDiv.classList.add('hidden');
+        fileListDiv.innerHTML = '';
+      }
+    }
+
+    function sincronizarServicioYPapel() {
+      const servicio = document.getElementById('tipo-servicio').value;
+      const selectPapel = document.getElementById('tipo-papel');
+
+      if (servicio === 'fotos') {
+        selectPapel.value = 'fotografico';
+      } else if (servicio === 'stickers') {
+        selectPapel.value = 'adhesivo';
+      } else if (servicio === 'tarjetas') {
+        selectPapel.value = 'opalina';
+      }
+    }
+
+    function calcularTotal() {
+      const servicio = document.getElementById('tipo-servicio').value;
+      const papel = document.getElementById('tipo-papel').value;
+      const color = document.getElementById('tipo-color').value;
+      const cantidad = parseInt(document.getElementById('cantidad').value) || 1;
+      const acabado = document.getElementById('acabado').value;
+
+      let precioBase = 150;
+
+      // Tarifas acordadas
+      if (papel === 'ecologico') {
+        precioBase = (color === 'color') ? 250 : 150;
+      } else if (papel === 'fotografico' || servicio === 'fotos') {
+        precioBase = 900;
+      } else if (papel === 'adhesivo' || servicio === 'stickers') {
+        precioBase = 1000;
+      } else if (papel === 'opalina' || servicio === 'tarjetas') {
+        precioBase = 500;
+      } else if (papel === 'normal') {
+        precioBase = (color === 'color') ? 225 : 150;
+      }
+
+      let subtotal = precioBase * cantidad;
+
+      if (acabado === 'plastificado') {
+        subtotal += 300 * cantidad;
+      }
+
+      document.getElementById('total-display').textContent = `$${subtotal.toFixed(2)}`;
+    }
+
+    function toggleAliasMercadoPago() {
+      const medioPago = document.querySelector('input[name="pago"]:checked').value;
+      const infoAlias = document.getElementById('info-alias-mp');
+      if (medioPago === 'mp') {
+        infoAlias.classList.remove('hidden');
+      } else {
+        infoAlias.classList.add('hidden');
+      }
+    }
+
+    function copiarAlias() {
+      const textToCopy = 'jackicosme94';
+      const tempInput = document.createElement('input');
+      tempInput.value = textToCopy;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      alert('¡Alias "jackicosme94" copiado al portapapeles!');
+    }
+
+    function enviarPedidoWhatsApp() {
+      const nombre = document.getElementById('nombre-cliente').value.trim();
+      const telefono = document.getElementById('telefono-cliente').value.trim();
+
+      if (!nombre || !telefono) {
+        alert("Por favor completá tu nombre y teléfono de contacto para continuar.");
+        return;
+      }
+
+      const servicioText = document.getElementById('tipo-servicio').options[document.getElementById('tipo-servicio').selectedIndex].text;
+      const papelText = document.getElementById('tipo-papel').options[document.getElementById('tipo-papel').selectedIndex].text;
+      const colorText = document.getElementById('tipo-color').options[document.getElementById('tipo-color').selectedIndex].text;
+      const cantidad = document.getElementById('cantidad').value;
+      const acabadoText = document.getElementById('acabado').options[document.getElementById('acabado').selectedIndex].text;
+      const medioPagoVal = document.querySelector('input[name="pago"]:checked').value;
+      const medioPagoText = medioPagoVal === 'mp' ? 'Mercado Pago (Alias: jackicosme94)' : 'Efectivo al retirar en local';
+      const total = document.getElementById('total-display').textContent;
+
+      let nombresArchivos = archivosCargados.length > 0 
+        ? archivosCargados.map(f => `• ${f.name}`).join('\n') 
+        : 'Ningún archivo adjuntado en la web (se enviará por este chat)';
+
+      // Construcción del mensaje para WhatsApp
+      let mensaje = `👋 ¡Hola Rumis! Quisiera realizar el siguiente pedido desde la web:\n\n`;
+      mensaje += `👤 *Cliente:* ${nombre}\n`;
+      mensaje += `📞 *Teléfono:* ${telefono}\n\n`;
+      mensaje += `📋 *Detalle del Pedido:*\n`;
+      mensaje += `• *Servicio:* ${servicioText}\n`;
+      mensaje += `• *Papel:* ${papelText}\n`;
+      mensaje += `• *Color:* ${colorText}\n`;
+      mensaje += `• *Cantidad:* ${cantidad}\n`;
+      mensaje += `• *Acabado:* ${acabadoText}\n\n`;
+      mensaje += `📁 *Archivos:* \n${nombresArchivos}\n\n`;
+      mensaje += `💳 *Medio de Pago:* ${medioPagoText}\n`;
+      mensaje += `💰 *Total Estimado:* ${total}\n\n`;
+      mensaje += `📍 *Retiro en:* Tarragona 465, Rosario.`;
+
+      const numeroWhatsApp = "5493416190861";
+      const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+      
+      window.open(urlWhatsApp, '_blank');
+    }
+
+    // Inicialización del cálculo al cargar la página
+    calcularTotal();
+  </script>
+
+</body>
+</html>
